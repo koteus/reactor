@@ -22,8 +22,22 @@ module.exports = {
       loaders: [
         {
           test: /\.(js|jsx)$/,
-          loaders: [ 'babel' ],
-          include: path.join(__dirname, 'app')
+          loader: 'babel',
+          include: path.join(__dirname, 'app'),
+          query: {
+            plugins: [
+              ['react-transform', {
+                transforms: [{
+                  transform: 'react-transform-hmr',
+                  imports: ['react'],
+                  locals: ['module']
+                }, {
+                  transform: 'react-transform-catch-errors',
+                  imports: ['react', 'redbox-react']
+                }]
+              }]
+            ]
+          }
         },
         {
           test: /\.less$/,

@@ -1,22 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Counter from './components/Counter'
+import { Provider } from 'react-redux'
+import App from './components/App'
 import configureStore from './configureStore';
 
-const store = configureStore();
-const rootEl = document.getElementById('root')
+// Grab the state from a global injected into server-generated HTML
+const initialState = window.__INITIAL_STATE__
+const store = configureStore(initialState)
 
 function render() {
-  const state = store.getState()
   ReactDOM.render(
-    <Counter
-      value = { state.counter }
-      onIncrement = { () => store.dispatch({ type: 'INCREMENT' }) }
-      onDecrement = { () => store.dispatch({ type: 'DECREMENT' }) }
-    />,
-    rootEl
+    <Provider store={ store }>
+      <App />
+    </Provider>,
+    document.getElementById('root')
   )
 }
 
 render()
-store.subscribe(render)
+// store.subscribe(render)

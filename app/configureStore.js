@@ -11,17 +11,17 @@ export default function configureStore(initialState) {
   else {
     store = createStore(rootReducer, initialState, compose(
       applyMiddleware(require('redux-immutable-state-invariant')(), thunk),
-      window.devToolsExtension ? window.devToolsExtension() : f => f
-    ));
+      typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+    ))
 
     if (module.hot) {
       // Enable Webpack hot module replacement for reducers
       module.hot.accept('./reducers', () => {
-        const nextReducer = require('./reducers');
-        store.replaceReducer(nextReducer);
-      });
+        const nextReducer = require('./reducers')
+        store.replaceReducer(nextReducer)
+      })
     }
   }
 
-  return store;
+  return store
 }

@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { incrementCounter, decrementCounter } from '../actions/counter'
 
 class Counter extends Component {
   constructor(props) {
@@ -49,4 +51,35 @@ Counter.propTypes = {
   onDecrement: PropTypes.func.isRequired
 }
 
+const mapStateToProps = (state) => {
+  return {
+    value: state.counter
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onIncrement: () => {
+      dispatch(incrementCounter())
+    },
+    onDecrement: () => {
+      dispatch(decrementCounter())
+    }
+  }
+}
+
+Counter = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Counter)
+
 export default Counter
+
+
+
+
+
+
+
+
+
