@@ -1,29 +1,49 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import { renderToString } from 'react-dom/server'
+import { Router, RouterContext, match, createMemoryHistory } from 'react-router'
 import App from './components/App'
 import configureStore from './configureStore'
+import routes from './routes'
 
-export default function handleRender(req, res) {
-
-  // Create a new Redux store instance
-  const store = configureStore()
-
-  // Render the component to a string
-  const html = renderToString(
-    <Provider store={ store }>
-      <App />
-    </Provider>
-  )
-
-  // Grab the initial state from our Redux store
-  const initialState = store.getState()
-
-  // Send the rendered page back to the client
-  res.send(renderFullPage(html, initialState))
+// TODO: use real async call
+function fetchInitialState(callback) {
+  callback({ counter: 999 })
 }
 
-function renderFullPage(html, initialState) {
+export default function handleRender(req, res) {
+  // location: req.originalUrl
+  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+    if (error) {
+      console.error('ROUTER ERROR: ', error)
+      res.status(500).send(error.message)
+    }
+    else if (redirectLocation) {
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search)
+    }
+    else if (renderProps) {
+      // Query the API asynchronously
+      fetchInitialState(initialState => {
+        const history = createMemoryHistory()
+        // Create a new Redux store instance
+        const store = configureStore(initialState, history)
+        // Render the component to a string
+        const html = renderToString(
+          <Provider store={store}>
+            <RouterContext {...renderProps}/>
+          </Provider>
+        )
+        // Send the rendered page back to the client
+        res.status(200).send(renderFullPage(html, store.getState()))
+      })
+    }
+    else {
+      res.status(404).send('Not found')
+    }
+  })
+}
+
+function renderFullPage(html, state) {
   return `
     <!doctype html>
     <html lang="en">
@@ -39,7 +59,7 @@ function renderFullPage(html, initialState) {
       <body>
         <div id="root">${html}</div>
         <script>
-          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+          window.__INITIAL_STATE__ = ${JSON.stringify(state)}
         </script>
         <script src="/static/bundle.js"></script>
       </body>
