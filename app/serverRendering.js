@@ -54,7 +54,6 @@ function renderFullPage(html, state) {
         <meta name="description" content="The sample todo app">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <link rel="stylesheet" href="static/main.css">
       </head>
       <body>
         <div id="root">${html}</div>

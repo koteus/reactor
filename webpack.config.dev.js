@@ -1,5 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
+var autoprefixer = require('autoprefixer');
+var precss = require('precss');
 
 module.exports = {
     devtool: 'cheap-module-eval-source-map',
@@ -40,17 +42,16 @@ module.exports = {
           }
         },
         {
-          test: /\.less$/,
-          loader: 'style!css!less' // use ! to chain loaders
-        },
-        {
           test: /\.css$/,
-          loader: 'style!css'
+          loader: 'style!css!postcss'
         },
         {
           test: /\.(png|jpg|gif)$/,
           loader: 'url?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
         }
       ]
+    },
+    postcss: function () {
+        return [autoprefixer, precss];
     }
 };
