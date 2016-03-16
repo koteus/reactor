@@ -28,16 +28,16 @@ module.exports = {
           include: path.join(__dirname, 'app'),
           query: {
             plugins: [
-              ['react-transform', {
-                transforms: [{
-                  transform: 'react-transform-hmr',
-                  imports: ['react'],
-                  locals: ['module']
-                }, {
-                  transform: 'react-transform-catch-errors',
-                  imports: ['react', 'redbox-react']
-                }]
-              }]
+              // ['react-transform', {
+              //   transforms: [{
+              //     transform: 'react-transform-hmr',
+              //     imports: ['react'],
+              //     locals: ['module']
+              //   }, {
+              //     transform: 'react-transform-catch-errors',
+              //     imports: ['react', 'redbox-react']
+              //   }]
+              // }]
             ]
           }
         },
@@ -46,8 +46,12 @@ module.exports = {
           loader: 'style!css!postcss'
         },
         {
-          test: /\.(png|jpg|gif)$/,
+          test: /\.(png|gif)$/,
           loader: 'url?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
+        },
+        {
+          test: /\.jpg$/,
+          loader: 'file-loader'
         }
       ]
     },

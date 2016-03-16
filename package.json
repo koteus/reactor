@@ -4,8 +4,16 @@
   "description": "My React playground",
   "main": "index.js",
   "scripts": {
+    "clean": "rm -rf build && mkdir build",
+    "build-server": "babel -d ./build ./server -s",
+    "build-client": "NODE_ENV=production webpack -p --config config/production/webpack.js",
+    "build": "npm run clean && npm run build-client && npm run build-server",
+    "production": "node ./build/index.js",
     "start": "babel-node server.js",
-    "test": "test"
+    "lint": "eslint app/ --quiet",
+    "debug": "node --debug ./build/index.js",
+    "test": "for i in $(ls tests/); do babel-node \"./tests/${i}\" | faucet ; done",
+    "validate": "npm run lint; npm run test && npm outdated --depth 0"
   },
   "author": "Konstantin Kalbazov",
   "license": "MIT",
@@ -18,6 +26,7 @@
   },
   "homepage": "https://github.com/koteus/reactor",
   "devDependencies": {
+    "autoprefixer": "^6.3.3",
     "babel-cli": "^6.5.1",
     "babel-core": "^6.4.5",
     "babel-loader": "^6.2.1",
@@ -25,7 +34,9 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-react-hmre": "^1.1.0",
     "css-loader": "^0.23.1",
+    "postcss": "^5.0.16",
     "postcss-loader": "^0.8.1",
+    "precss": "^1.4.0",
     "redux-immutable-state-invariant": "^1.2.0",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.12",
@@ -33,15 +44,12 @@
     "webpack-hot-middleware": "^2.6.4"
   },
   "dependencies": {
-    "autoprefixer": "^6.3.3",
     "express": "^4.13.4",
-    "postcss": "^5.0.16",
-    "precss": "^1.4.0",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-redux": "^4.1.2",
     "react-router": "^2.0.0",
-    "react-router-redux": "^3.0.0",
+    "react-router-redux": "^4.0.0",
     "redux": "^3.1.6",
     "redux-thunk": "^1.0.3"
   }

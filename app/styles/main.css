@@ -1,0 +1,10 @@
+$grey: #efefef;
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: $grey url('eye.jpg') no-repeat center;
+  color: green;
+}

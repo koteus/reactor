@@ -1,10 +1,9 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import { renderToString } from 'react-dom/server'
-import { Router, RouterContext, match, createMemoryHistory } from 'react-router'
-import App from './components/App'
+import { RouterContext, match, createMemoryHistory } from 'react-router'
 import configureStore from './configureStore'
-import routes from './routes'
+import routes from '../routes'
 
 // TODO: use real async call
 function fetchInitialState(callback) {
