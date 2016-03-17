@@ -20,13 +20,13 @@ export default function configureStore(initialState, history) {
       typeof window === 'object' &&
       typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
     ))
+  }
 
-    if (module.hot) {
-      module.hot.accept('../reducers/index', () => {
-        const nextReducer = require('../reducers/index')
-        store.replaceReducer(nextReducer)
-      })
-    }
+  if (module.hot) {
+    module.hot.accept('../reducers', () => {
+      const nextReducer = require('../reducers/index').default
+      store.replaceReducer(nextReducer)
+    })
   }
 
   return store

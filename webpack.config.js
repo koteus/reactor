@@ -10,36 +10,21 @@ module.exports = {
       './app/main'
     ],
     output: {
-        path: path.join(__dirname, 'build'),
+        path: path.join(__dirname, 'build/public'),
         publicPath: '/static/',
         filename: 'bundle.js'
     },
     plugins: [
-      // new webpack.optimize.CommonsChunkPlugin('main.js'),
       new webpack.optimize.OccurenceOrderPlugin(),
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin()
+      // new webpack.NoErrorsPlugin()
     ],
     module: {
       loaders: [
         {
           test: /\.(js|jsx)$/,
           loader: 'babel',
-          include: path.join(__dirname, 'app'),
-          query: {
-            plugins: [
-              // ['react-transform', {
-              //   transforms: [{
-              //     transform: 'react-transform-hmr',
-              //     imports: ['react'],
-              //     locals: ['module']
-              //   }, {
-              //     transform: 'react-transform-catch-errors',
-              //     imports: ['react', 'redbox-react']
-              //   }]
-              // }]
-            ]
-          }
+          include: path.join(__dirname, 'app')
         },
         {
           test: /\.css$/,

@@ -39,11 +39,12 @@ app.use((req, res) => {
     else if (renderProps) {
       //fetchData().then(() => {
         store = configureStore(store.getState(), memoryHistory)
-        const html = renderToString(
+        const Root = () => (
           <Provider store={store}>
             <RouterContext {...renderProps} />
           </Provider>
         )
+        const html = renderToString(<Root />)
         res.status(200).send(renderFullPage(html, store.getState()))
       //})
     }
